@@ -76,30 +76,34 @@ function Main({ activeJournal, data, setData, journal }) {
                     value={current.title}
                     onChange={(e) => onEdit('title', e.target.value)}
                 />
-                <ReactMarkdown>
-                    <TextField
-                        id='journalbody'
-                        label="Journal"
-                        name='journalbody'
-                        placeholder="Start writing"
-                        multiline
-                        rows={6}
-                        rowsMax={6}
-                        fullWidth
-                        margin='normal'
-                        variant='filled'
-                        className={classes.title}
-                        value={current.journalbody}
-                        onChange={(e) => onEdit('journalbody', e.target.value)} />
-                </ReactMarkdown>
+                <TextField
+                    id='journalbody'
+                    label="Journal"
+                    name='journalbody'
+                    placeholder="Start writing"
+                    multiline
+                    rows={6}
+                    rowsMax={6}
+                    fullWidth
+                    margin='normal'
+                    variant='filled'
+                    className={classes.title}
+                    value={current.journalbody}
+                    onChange={(e) => onEdit('journalbody', e.target.value)} />
             </div>
             <button onClick={save}>Save</button>
             <div>
                 <Typography variant='h5'>
                     {current.title}
                 </Typography>
-                <Box component='div' display='block'>
-                    {current.journalbody}
+                <Box component='div'
+                    display='block'
+                    rows={6}
+                    rowsMax={6}
+                    multiline>
+                    <ReactMarkdown>
+                        {current.journalbody}
+                    </ReactMarkdown>
                 </Box>
             </div>
             {/* <Autosave data={data} onSave={onSave} /> */}
