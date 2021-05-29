@@ -10,9 +10,11 @@ function JournalState(props) {
     const initialState = {
         journals: [],
         activeJournal: false,
-        isSaving: false
+        
     }
     const [state, dispatch] = useReducer(JournalReducer, initialState);
+
+   
 
     const setJournals = async () => {
         try {
@@ -69,12 +71,11 @@ function JournalState(props) {
             value={{
                 journals: state.journals,
                 activeJournal: state.activeJournal,
-                currentActiveJournal: state.currentActiveJournal,
                 setJournals,
                 addJournal,
                 deleteJournal,
                 setActiveJournal,
-                updateJournal
+                updateJournal,
             }}>
             {props.children}
         </JournalContext.Provider>

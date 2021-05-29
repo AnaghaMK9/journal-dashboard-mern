@@ -63,7 +63,7 @@ function Sidebar() {
 
     const [data, setData] = useState({
         title: 'Untitled Journal',
-        journalbody: "this is body"
+        journalbody: "this is body.."
     });
 
     useEffect(() => {
@@ -75,7 +75,7 @@ function Sidebar() {
 
     const onAddEntry = () => {
         console.log('Add');
-        const {title, journalbody} = data;
+        const { title, journalbody } = data;
         addJournal(title, journalbody);
 
     }
@@ -84,11 +84,7 @@ function Sidebar() {
         setActiveJournal(id);
     }
 
-    const getActiveJournal = () => {
-        const journal = journals.find((journal) => journal._id === activeJournal);
-        return journal;
-        //console.log(activeEntry);
-    };
+
     return (
         <div className={classes.root}>
             <CssBaseline />
@@ -148,7 +144,7 @@ function Sidebar() {
             </Drawer>
             <main className={classes.content}>
                 <Main
-                    activeJournal={getActiveJournal()}
+                    activeJournal={activeJournal}
                     data={data}
                     setData={setData} />
             </main>

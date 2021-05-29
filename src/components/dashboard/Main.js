@@ -1,8 +1,8 @@
 import { Box, TextField, Typography } from '@material-ui/core';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import JournalContext from '../../context/journal/JournalContext.js';
-import { Autosave, useAutosave } from 'react-autosave';
+import ReactMarkdown from 'react-markdown';
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -10,38 +10,34 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-function Main({ activeJournal, data, setData }) {
+function Main({ activeJournal, data, setData, journal }) {
     const journalContext = useContext(JournalContext);
-    const { journals, updateJournal, setJournals, setActiveJournal } = journalContext;
+    const { journals, updateJournal } = journalContext;
 
-    
-    // const [title, setTitle] = useState("");
-    // const [journalbody, setJournalbody] = useState("");
     const [current, setCurrent] = useState({});
+
     const onEdit = (field, value) => {
-        console.log(activeJournal);
-        // setData({
-        //     ...data,
-        //     [field]: value
-        // })
+
         setCurrent({
             ...current,
             [field]: value
         });
-        // setActiveJournal();
-        
     }
-    // const onSave = setTimeout(() => {
-    //     if (activeJournal) {
-    //         console.log('calling all the barbz');
-    //         const { _id, title, journalbody } = activeJournal;
-    //         updateJournal(_id, title, journalbody);
-    //     }
-    // }, 5000);
-    const save = () =>{
-        updateJournal(activeJournal._id, current.title, current.journalbody);
-        
+    useEffect(() => {
+        if (activeJournal) {
+            const journal = getActiveJournal();
+            setCurrent(journal);
+        }
+        // eslint-disable-next-line
+    }, [activeJournal]);
 
+    const getActiveJournal = () => {
+        const journal = journals.find((journal) => journal._id === activeJournal);
+        return journal;
+    };
+
+    const save = () => {
+        updateJournal(current._id, current.title, current.journalbody);
     }
     const classes = useStyles();
     if (journals.length === 0) {
@@ -77,25 +73,25 @@ function Main({ activeJournal, data, setData }) {
                     margin='normal'
                     variant='filled'
                     className={classes.title}
-                    defaultValue={activeJournal.title}
                     value={current.title}
                     onChange={(e) => onEdit('title', e.target.value)}
                 />
-                <TextField
-                    id='journalbody'
-                    label="Journal"
-                    name='journalbody'
-                    placeholder="Start writing"
-                    multiline
-                    rows={6}
-                    rowsMax={6}
-                    fullWidth
-                    margin='normal'
-                    variant='filled'
-                    className={classes.title}
-                    defaultValue={activeJournal.journalbody}
-                    value={current.journalbody}
-                    onChange={(e) => onEdit('journalbody', e.target.value)} />
+                <ReactMarkdown>
+                    <TextField
+                        id='journalbody'
+                        label="Journal"
+                        name='journalbody'
+                        placeholder="Start writing"
+                        multiline
+                        rows={6}
+                        rowsMax={6}
+                        fullWidth
+                        margin='normal'
+                        variant='filled'
+                        className={classes.title}
+                        value={current.journalbody}
+                        onChange={(e) => onEdit('journalbody', e.target.value)} />
+                </ReactMarkdown>
             </div>
             <button onClick={save}>Save</button>
             <div>
