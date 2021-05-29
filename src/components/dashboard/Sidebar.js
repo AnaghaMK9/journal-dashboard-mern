@@ -13,11 +13,12 @@ import {
     ListItemText,
     Divider,
     ListItemSecondaryAction,
-    IconButton
+    IconButton,
+    TextField
 } from '@material-ui/core';
-import { AddBox, ExitToApp, MenuBook, Delete } from '@material-ui/icons';
+import { AddBox, ExitToApp, MenuBook, Delete, Search } from '@material-ui/icons';
 import Main from './Main';
-
+import SearchResults from 'react-filter-search';
 //context
 import JournalContext from '../../context/journal/JournalContext.js';
 
@@ -65,12 +66,18 @@ function Sidebar() {
         title: 'Untitled Journal',
         journalbody: "this is body.."
     });
+    // const [searchArray, setSearchArray] = useState([]);
+    const [searchValue, setSearchValue] = useState("");
+
 
     useEffect(() => {
         setJournals();
         // eslint-disable-next-line
     }, []);
 
+    const onSearch = (event) => {
+        setSearchValue(event.target.value);
+    }
     const classes = useStyles();
 
     const onAddEntry = () => {
@@ -114,24 +121,36 @@ function Sidebar() {
                     </List>
                     <Divider />
                     <List>
-                        {journals.map((journal) => (
-                            <ListItem button key={journal._id}
-                                onClick={() => onEditEntry(journal._id)}
-                                className={journal._id === activeJournal && classes.setActive}>
-                                <ListItemIcon><MenuBook /></ListItemIcon>
-                                <ListItemText
-                                    primary={journal.title}
-                                    secondary={
-                                        journal.journalbody &&
-                                        journal.journalbody.substr(0, 50) + "..."} />
-                                <ListItemSecondaryAction>
-                                    <IconButton edge='end' aria-label="delete" onClick={() => deleteJournal(journal._id)}>
-                                        <Delete />
-                                    </IconButton>
-                                </ListItemSecondaryAction>
-                            </ListItem>
-                        ))}
-
+                        <ListItem>
+                            <ListItemIcon><Search /></ListItemIcon>
+                            <TextField placeholder='Search Journals'
+                                onChange={onSearch}
+                                fullWidth />
+                        </ListItem>
+                    </List>
+                    <List>
+                        <SearchResults
+                            value={searchValue}
+                            data={journals}
+                            renderResults={journals => (
+                                journals.map((journal) => (
+                                    <ListItem button key={journal._id}
+                                        onClick={() => onEditEntry(journal._id)}
+                                        className={journal._id === activeJournal && classes.setActive}>
+                                        <ListItemIcon><MenuBook /></ListItemIcon>
+                                        <ListItemText
+                                            primary={journal.title}
+                                            secondary={
+                                                journal.journalbody &&
+                                                journal.journalbody.substr(0, 50) + "..."} />
+                                        <ListItemSecondaryAction>
+                                            <IconButton edge='end' aria-label="delete" onClick={() => deleteJournal(journal._id)}>
+                                                <Delete />
+                                            </IconButton>
+                                        </ListItemSecondaryAction>
+                                    </ListItem>
+                                ))
+                            )} />
                     </List>
                     <Divider />
                     <List>

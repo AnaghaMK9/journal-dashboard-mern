@@ -1,4 +1,4 @@
-import { Box, TextField, Typography } from '@material-ui/core';
+import { Box, TextField, Typography, Button } from '@material-ui/core';
 import React, { useContext, useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import JournalContext from '../../context/journal/JournalContext.js';
@@ -91,7 +91,7 @@ function Main({ activeJournal, data, setData, journal }) {
                     value={current.journalbody}
                     onChange={(e) => onEdit('journalbody', e.target.value)} />
             </div>
-            <button onClick={save}>Save</button>
+            <Button onClick={save} backgroundColor='primary'>Save</Button>
             <div>
                 <Typography variant='h5'>
                     {current.title}
@@ -106,9 +106,7 @@ function Main({ activeJournal, data, setData, journal }) {
                     </ReactMarkdown>
                 </Box>
             </div>
-            {/* <Autosave data={data} onSave={onSave} /> */}
         </div>
     )
 }
-
 export default Main;
